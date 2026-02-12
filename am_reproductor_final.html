@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A&M Producciones - Nuestras Composiciones</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #0a0a0a;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            color: #fff;
+            padding: 60px 20px;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 42px;
+            font-weight: 300;
+            background: linear-gradient(135deg, #FFD700, #C0C0C0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .section-title p {
+            font-size: 16px;
+            color: #999;
+            letter-spacing: 1px;
+        }
+
+        .player-container {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 1px solid #2a2a2a;
+        }
+
+        .now-playing {
+            text-align: center;
+            padding: 30px 0;
+            border-bottom: 1px solid #2a2a2a;
+            margin-bottom: 30px;
+        }
+
+        .now-playing h3 {
+            font-size: 28px;
+            font-weight: 400;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .now-playing .artists {
+            font-size: 16px;
+            color: #999;
+            font-weight: 300;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #2a2a2a;
+            border-radius: 3px;
+            margin: 25px 0;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FFD700, #C0C0C0);
+            border-radius: 3px;
+            width: 0%;
+            position: relative;
+            transition: width 0.1s;
+            pointer-events: none;
+        }
+
+        .progress-bar-fill::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .control-btn {
+            background: transparent;
+            border: 2px solid #444;
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 18px;
+        }
+
+        .control-btn:hover { border-color: #FFD700; transform: scale(1.05); }
+
+        .control-btn.play {
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(135deg, #FFD700, #C0C0C0);
+            border: none;
+            color: #000;
+            font-size: 26px;
+        }
+
+        .control-btn.play:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(255,215,0,0.5);
+        }
+
+        .playlist { list-style: none; }
+
+        .playlist-item {
+            display: flex;
+            align-items: center;
+            padding: 18px 20px;
+            border-bottom: 1px solid #1a1a1a;
+            transition: all 0.3s;
+            cursor: pointer;
+            border-radius: 8px;
+            border-left: 3px solid transparent;
+        }
+
+        .playlist-item:hover {
+            background: rgba(255,215,0,0.05);
+            transform: translateX(5px);
+        }
+
+        .playlist-item.active {
+            background: rgba(255,215,0,0.08);
+            border-left: 3px solid #FFD700;
+        }
+
+        .song-number {
+            font-size: 16px;
+            color: #666;
+            width: 40px;
+            font-weight: 300;
+        }
+
+        .playlist-item.active .song-number {
+            color: #FFD700;
+            font-weight: 600;
+        }
+
+        .song-info { flex: 1; }
+
+        .song-title {
+            font-size: 17px;
+            font-weight: 400;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .song-composers {
+            font-size: 13px;
+            color: #999;
+            font-weight: 300;
+        }
+
+        .song-duration {
+            font-size: 15px;
+            color: #666;
+            font-weight: 300;
+        }
+
+        .playlist-item.active .song-duration { color: #FFD700; }
+
+        @media (max-width: 768px) {
+            .section-title h2 { font-size: 28px; }
+            .player-container { padding: 25px; }
+            .now-playing h3 { font-size: 20px; }
+            .playlist-item { padding: 14px; }
+            .song-number { width: 28px; font-size: 13px; }
+            .song-title { font-size: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="section-title">
+            <h2>NUESTRAS COMPOSICIONES</h2>
+            <p>Conoce nuestra música</p>
+        </div>
+
+        <div class="player-container">
+            <div class="now-playing">
+                <h3 id="currentTitle">Confía en Ti</h3>
+                <p class="artists" id="currentComposers">Abraham & Marco</p>
+            </div>
+
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-bar-fill" id="progressFill"></div>
+            </div>
+
+            <div class="time-display">
+                <span id="currentTime">00:00</span>
+                <span id="totalTime">02:52</span>
+            </div>
+
+            <div class="controls">
+                <button class="control-btn" id="prevBtn">⏮</button>
+                <button class="control-btn play" id="playBtn">▶</button>
+                <button class="control-btn" id="nextBtn">⏭</button>
+            </div>
+
+            <ul class="playlist">
+                <li class="playlist-item active" data-index="0">
+                    <span class="song-number">1</span>
+                    <div class="song-info">
+                        <div class="song-title">Confía en Ti</div>
+                        <div class="song-composers">Abraham & Marco</div>
+                    </div>
+                    <span class="song-duration">00:20</span>
+                </li>
+                <li class="playlist-item" data-index="1">
+                    <span class="song-number">2</span>
+                    <div class="song-info">
+                        <div class="song-title">Un Día Más Solo</div>
+                        <div class="song-composers">Abraham & Marco</div>
+                    </div>
+                    <span class="song-duration">00:20</span>
+                </li>
+                <li class="playlist-item" data-index="2">
+                    <span class="song-number">3</span>
+                    <div class="song-info">
+                        <div class="song-title">Cuando Te Acuerdas de Mí</div>
+                        <div class="song-composers">Abraham & Marco</div>
+                    </div>
+                    <span class="song-duration">00:20</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Audios reales -->
+    <audio id="audioPlayer" preload="metadata"></audio>
+
+    <script>
+        const songs = [
+            {
+                title: "Confía en Ti",
+                composers: "Abraham & Marco",
+                duration: "00:20",
+                src: "preview_Confie_en_ti.mp3"
+            },
+            {
+                title: "Un Día Más Solo",
+                composers: "Abraham & Marco",
+                duration: "00:20",
+                src: "preview_Un_dia_mas_solo.mp3"
+            },
+            {
+                title: "Cuando Te Acuerdas de Mí",
+                composers: "Abraham & Marco",
+                duration: "00:20",
+                src: "preview_Cuando_te_acuerdas_de_mi.mp3"
+            }
+        ];
+
+        const audio = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const currentTimeEl = document.getElementById('currentTime');
+        const totalTimeEl = document.getElementById('totalTime');
+        const currentTitleEl = document.getElementById('currentTitle');
+        const currentComposersEl = document.getElementById('currentComposers');
+        const playlistItems = document.querySelectorAll('.playlist-item');
+
+        let currentIndex = 0;
+        let isPlaying = false;
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '00:00';
+            const m = Math.floor(seconds / 60);
+            const s = Math.floor(seconds % 60);
+            return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        function loadSong(index) {
+            const song = songs[index];
+            audio.src = song.src;
+            currentTitleEl.textContent = song.title;
+            currentComposersEl.textContent = song.composers;
+            totalTimeEl.textContent = song.duration;
+            progressFill.style.width = '0%';
+            currentTimeEl.textContent = '00:00';
+
+            playlistItems.forEach(item => item.classList.remove('active'));
+            playlistItems[index].classList.add('active');
+
+            currentIndex = index;
+        }
+
+        function playSong() {
+            audio.play();
+            isPlaying = true;
+            playBtn.textContent = '⏸';
+        }
+
+        function pauseSong() {
+            audio.pause();
+            isPlaying = false;
+            playBtn.textContent = '▶';
+        }
+
+        // Play / Pause
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                pauseSong();
+            } else {
+                playSong();
+            }
+        });
+
+        // Anterior
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + songs.length) % songs.length;
+            loadSong(currentIndex);
+            playSong();
+        });
+
+        // Siguiente
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % songs.length;
+            loadSong(currentIndex);
+            playSong();
+        });
+
+        // Click en playlist
+        playlistItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const index = parseInt(item.dataset.index);
+                loadSong(index);
+                playSong();
+            });
+        });
+
+        // Actualizar barra de progreso
+        audio.addEventListener('timeupdate', () => {
+            if (audio.duration) {
+                const percent = (audio.currentTime / audio.duration) * 100;
+                progressFill.style.width = percent + '%';
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+            }
+        });
+
+        // Saltar en la barra de progreso
+        progressBar.addEventListener('click', (e) => {
+            const rect = progressBar.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            audio.currentTime = percent * audio.duration;
+        });
+
+        // Canción terminó - pasa a la siguiente
+        audio.addEventListener('ended', () => {
+            currentIndex = (currentIndex + 1) % songs.length;
+            loadSong(currentIndex);
+            playSong();
+        });
+
+        // Cargar primera canción al inicio
+        loadSong(0);
+    </script>
+</body>
+</html>
