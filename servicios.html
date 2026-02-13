@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A&M Producciones - Servicios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@200;300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #FFD700;
+            --silver: #C0C0C0;
+            --black: #080808;
+            --dark: #111111;
+            --dark2: #1a1a1a;
+        }
+
+        body {
+            background: var(--black);
+            color: #fff;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ─── HERO SECTION ─── */
+        .hero {
+            text-align: center;
+            padding: 100px 20px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at center top, rgba(212,175,55,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-label {
+            font-size: 11px;
+            letter-spacing: 6px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(48px, 8vw, 90px);
+            font-weight: 300;
+            letter-spacing: 4px;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #fff 30%, var(--gold) 60%, var(--silver) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+        }
+
+        .hero p {
+            font-size: 15px;
+            color: #888;
+            letter-spacing: 2px;
+            font-weight: 300;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .divider {
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 40px auto;
+        }
+
+        /* ─── SERVICES GRID ─── */
+        .services {
+            padding: 20px 40px 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: linear-gradient(135deg, var(--dark2) 0%, var(--dark) 100%);
+            border: 1px solid #2a2a2a;
+            border-radius: 4px;
+            padding: 50px 40px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            cursor: default;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .service-card:hover::before { transform: scaleX(1); }
+
+        .service-card:hover {
+            border-color: rgba(212,175,55,0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(212,175,55,0.05);
+        }
+
+        .service-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 72px;
+            font-weight: 300;
+            color: rgba(212,175,55,0.1);
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            line-height: 1;
+            transition: color 0.4s;
+        }
+
+        .service-card:hover .service-number {
+            color: rgba(212,175,55,0.2);
+        }
+
+        .service-icon {
+            font-size: 36px;
+            margin-bottom: 25px;
+            display: block;
+        }
+
+        .service-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .service-subtitle {
+            font-size: 11px;
+            letter-spacing: 4px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .service-desc {
+            font-size: 14px;
+            color: #888;
+            line-height: 1.9;
+            font-weight: 300;
+            margin-bottom: 30px;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: 40px;
+        }
+
+        .service-features li {
+            font-size: 13px;
+            color: #aaa;
+            padding: 8px 0;
+            border-bottom: 1px solid #1f1f1f;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 300;
+        }
+
+        .service-features li::before {
+            content: '—';
+            color: var(--gold);
+            font-size: 10px;
+        }
+
+        .service-features li:last-child { border-bottom: none; }
+
+        .cta-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            border: 1px solid rgba(212,175,55,0.5);
+            color: var(--gold);
+            padding: 14px 28px;
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .cta-btn:hover {
+            background: var(--gold);
+            color: #000;
+            border-color: var(--gold);
+            transform: scale(1.02);
+        }
+
+        .cta-btn .whatsapp-icon {
+            font-size: 16px;
+        }
+
+        /* ─── BOTTOM CTA ─── */
+        .bottom-cta {
+            text-align: center;
+            padding: 80px 20px 100px;
+            position: relative;
+        }
+
+        .bottom-cta::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, transparent, var(--gold));
+        }
+
+        .bottom-cta h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 300;
+            color: #fff;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .bottom-cta p {
+            font-size: 14px;
+            color: #666;
+            letter-spacing: 1px;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        .main-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, var(--gold), var(--silver));
+            color: #000;
+            padding: 18px 50px;
+            font-size: 13px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .main-cta:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(212,175,55,0.4);
+        }
+
+        /* ─── ANIMATIONS ─── */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .fade-in:nth-child(1) { animation-delay: 0.1s; }
+        .fade-in:nth-child(2) { animation-delay: 0.3s; }
+        .fade-in:nth-child(3) { animation-delay: 0.5s; }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .services { padding: 20px 20px 60px; gap: 20px; }
+            .service-card { padding: 35px 25px; }
+            .hero { padding: 70px 20px 50px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO -->
+    <div class="hero">
+        <p class="hero-label">A&M Producciones</p>
+        <h1>Nuestros<br>Servicios</h1>
+        <p>Transformamos tus ideas en canciones que perduran. Cada letra es una historia, cada nota una emoción.</p>
+        <div class="divider"></div>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="services">
+
+        <!-- Servicio 1 -->
+        <div class="service-card fade-in">
+            <span class="service-number">01</span>
+            <span class="service-icon">✍️</span>
+            <div class="service-subtitle">Servicio Premium</div>
+            <h2 class="service-title">Mejora de Letras</h2>
+            <p class="service-desc">
+                ¿Tienes una idea pero no sabes cómo expresarla? Te ayudamos a pulir y mejorar tu letra para que transmita exactamente lo que sientes.
+            </p>
+            <ul class="service-features">
+                <li>Revisión completa de la letra</li>
+                <li>Corrección de métrica y rima</li>
+                <li>Sugerencias creativas y estilísticas</li>
+                <li>Adaptación al género musical</li>
+                <li>Entrega rápida y personalizada</li>
+            </ul>
+
+        </div>
+
+        <!-- Servicio 2 -->
+        <div class="service-card fade-in">
+            <span class="service-number">02</span>
+            <span class="service-icon">📜</span>
+            <div class="service-subtitle">Servicio Profesional</div>
+            <h2 class="service-title">Registro de Canciones</h2>
+            <p class="service-desc">
+                Protege tu obra y asegura tus derechos de autor. Te guiamos en todo el proceso para registrar tu canción de forma oficial.
+            </p>
+            <ul class="service-features">
+                <li>Asesoría en derechos de autor</li>
+                <li>Gestión del proceso de registro</li>
+                <li>Documentación completa</li>
+                <li>Protección legal de tu obra</li>
+                <li>Seguimiento del trámite</li>
+            </ul>
+
+        </div>
+
+        <!-- Servicio 3 -->
+        <div class="service-card fade-in">
+            <span class="service-number">03</span>
+            <span class="service-icon">🎵</span>
+            <div class="service-subtitle">Servicio Completo</div>
+            <h2 class="service-title">Composición Completa</h2>
+            <p class="service-desc">
+                ¿Tienes una melodía en mente pero necesitas la letra? Creamos desde cero una canción única y original adaptada a tu estilo y visión.
+            </p>
+            <ul class="service-features">
+                <li>Creación de letra original</li>
+                <li>Estructura completa de la canción</li>
+                <li>Adaptación al género deseado</li>
+                <li>Revisiones incluidas</li>
+                <li>Derechos de autor a tu nombre</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+    <!-- BOTTOM CTA -->
+    <div class="bottom-cta">
+        <h2>¿Listo para crear<br>tu canción?</h2>
+        <p>Contáctanos hoy y hagamos realidad tu música</p>
+        <!-- BOTÓN DE WHATSAPP AQUÍ -->
+        <div style="height: 60px;"></div>
+    </div>
+
+</body>
+</html>
